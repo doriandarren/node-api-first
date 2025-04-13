@@ -9,16 +9,15 @@ export const userUpdateController = async(req, res = response) => {
     const { id } = req.params;
 
     // Para exluirlos
-    const { password, google, email, ...resto} = req.body;
+    const { _id, password, google, email, ...updateData} = req.body;
 
     //TODO validar DB
     if(password){
         const salt = bcrypt.genSaltSync();
-        resto.password = bcrypt.hashSync(password, salt);
+        updateData.password = bcrypt.hashSync(password, salt);
     }
 
-
-    const userNew = await User.findByIdAndUpdate(id, resto);
+    const userNew = await User.findByIdAndUpdate(id, updateData, { new: true });
 
     res.json({
         userNew

@@ -6,7 +6,7 @@ import { validateFields } from "../middlewares/validate-fields.js";
 import { userStoreController } from "../controllers/users/userStoreController.js";
 import { userListController } from "../controllers/users/userListController.js";
 import { userUpdateController } from "../controllers/users/userUpdateController.js";
-import { isEmailExist, isValidRole } from "../helpers/db-validators.js";
+import { isEmailExist, isUserById, isValidRole } from "../helpers/db-validators.js";
 import { userDeleteController } from "../controllers/users/userDeleteController.js";
 
 
@@ -30,10 +30,19 @@ router.post('/', [
 
 
 // http://localhost:8080/api/usuarios/10
-router.put('/:id', userUpdateController);
+router.put('/:id', [
+    check('id', 'No es un ID válido').isMongoId(),
+    check('id').custom( isUserById ),
+    check('role').custom( isValidRole ),
+    validateFields
+], userUpdateController);
 
 
-router.delete('/', userDeleteController);
+router.delete('/:id', [
+    check('id', 'No es un ID válido').isMongoId(),
+    check('id').custom( isUserById ),
+    validateFields
+], userDeleteController);
 
 
 router.patch('/', userPatch);
