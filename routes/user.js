@@ -1,8 +1,6 @@
 import { Router } from "express";
-import { userPatch } from "../controllers/users/user.controller.js";
 import { check } from "express-validator";
 import { validateFields } from "../middlewares/validate-fields.js";
-
 import { userStoreController } from "../controllers/users/userStoreController.js";
 import { userListController } from "../controllers/users/userListController.js";
 import { userUpdateController } from "../controllers/users/userUpdateController.js";
@@ -44,8 +42,6 @@ router.delete('/:id', [
     validateFields
 ], userDeleteController);
 
-
-router.patch('/', userPatch);
 
 
 export default router;
